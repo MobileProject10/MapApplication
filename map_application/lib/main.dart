@@ -1,13 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'LoginScreen.dart';
 
-void main() => runApp(const MyApp());
+void main() => runApp(LoginApp());
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
   State<MyApp> createState() => _MyAppState();
+}
+
+class LoginApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext) {
+    return MaterialApp(
+      title: 'Google Maps In Flutter',
+      debugShowCheckedModeBanner: false,
+      home: LoginScreen(),
+    );
+  }
 }
 
 class _MyAppState extends State<MyApp> {
