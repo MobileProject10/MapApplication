@@ -7,24 +7,6 @@ class LoginScreen extends StatefulWidget {
   State<StatefulWidget> createState() => _LoginScreenState();
 }
 
-//VIP
-Widget buildHeader(){
-  return Column(
-    children: <Widget>[
-      SizedBox(
-        height: 60,
-        width: 500,
-        child: const DecoratedBox(
-          decoration: const BoxDecoration(
-            color: Color.fromARGB(255, 13, 141, 192),
-          ),
-        ),
-      ),
-    ],
-  );
-}
-//
-
 Widget buildUsername() {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
