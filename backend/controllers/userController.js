@@ -90,11 +90,56 @@ const login = (req, res) => {
             }
         })
     })
-
-}
+    
+    const deleteUser = (req, res) => {
+        const {username, password} = req.body;
+    
+        if(!username || !password){
+            return res.status(400).json({status:"error",msg:"One or more fields are missing"});
+        }
+    
+        if(typeof username !== 'string' || typeof password !== 'string'){
+            return res.status(400).json({msg:'Inputs are not valid'})
+        }
+    
+        userModel.getUserByName(username, (err, result) => {
+            if(err){
+                console.log(err);
+                return res.status(500).json({status:"error", msg:err});
+            }
+    
+            if(!result[0]){
+                return res.status(400).json({status:"error", msg:"Invalid username or password"});
+            }
+    
+            bcrypt.compare(password, result[0].password, (err, correctPassword) => {
+                if(err){
+                    console.log(err);
+                    return res.status(500).json({status:"error", msg:"Error on comparing passwords"});
+                }
+    
+                if(!correctPassword){
+                    return res.status(400).json({status:"error", msg:"Invalid username or password"});
+                }
+    
+                userModel.deleteUserByName(username, (err) => {
+                    if(err){
+                        console.log(err);
+                        return res.status(500).json({status:"error", msg:err});
+                    }
+                 
+                    res.json({status:"success", msg:"User deleted successfully"});
+    
+                })
+    
+            })
+        })
+    
+    }
 
 
 module.exports = {
     register,
-    login
+    login,
+    deleteUser
 }
