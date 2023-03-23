@@ -14,7 +14,10 @@ app.use(cors());
 app.use(morgan("dev"));
 app.use(helmet());
 
+const auth = require('./misc/auth');
+
 const userRouter = require('./routes/userRoutes')
+const userAuthRouter = require('./routes/userAuthRoutes')
 
 app.use((err, req, res, next) => {
   console.error(err.stack)
@@ -22,6 +25,10 @@ app.use((err, req, res, next) => {
 })
 
 app.use('/user', userRouter);
+
+app.use(auth);
+
+app.use('/user', userAuthRouter);
 
 
 module.exports = app;

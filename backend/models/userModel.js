@@ -1,4 +1,4 @@
-const map_application = require("../mp")
+const map_application = require("../misc/map_application.js")
 
 const user = {
     register: (username, password, callback) => {
