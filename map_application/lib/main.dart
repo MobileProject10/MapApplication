@@ -17,7 +17,7 @@ class LoginApp extends StatelessWidget {
     return MaterialApp(
       title: 'Google Maps In Flutter',
       debugShowCheckedModeBanner: false,
-      home: LoginScreen(),
+      home: LoginScreen(onSubmit: (String value) {  },),
     );
   }
 }
