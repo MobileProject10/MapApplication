@@ -31,4 +31,15 @@ app.use(auth);
 app.use('/user', userAuthRouter);
 
 
+app.get('/api/data', (req, res) => {
+  const data = { message: 'Hello from backend!' }
+  res.send(data)
+})
+
+app.listen(3000, () => {
+  console.log('Server running on port 3000')
+})
+
+
+
 module.exports = app;

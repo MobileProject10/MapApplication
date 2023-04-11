@@ -23,7 +23,7 @@ USE `map_application` ;
 CREATE TABLE IF NOT EXISTS `map_application`.`users` (
   `userID` INT NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(45) NOT NULL,
-  `password` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(200) NOT NULL,
   PRIMARY KEY (`userID`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
