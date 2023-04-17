@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_maps_in_flutter/main.dart';
 
 // class Settings extends StatefulWidget {
@@ -14,7 +13,7 @@ import 'package:google_maps_in_flutter/main.dart';
 //       home: Scaffold(
 //         appBar: AppBar(
 //           title: const Text('Asetukset'),
-          
+
 //           elevation: 2,
 //         ),
 //         body: AnnotatedRegion<SystemUiOverlayStyle>(
@@ -31,7 +30,7 @@ import 'package:google_maps_in_flutter/main.dart';
 //                   child: Column(
 //                     mainAxisAlignment: MainAxisAlignment.center,
 //                     children: <Widget>[
-                      
+
 //                 //Widgetit tähän
 //                     ],
 //                   ),
@@ -47,11 +46,11 @@ import 'package:google_maps_in_flutter/main.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});
-  
+
   @override
   State<Settings> createState() => _SettingsState();
 }
-  
+
 class _SettingsState extends State<Settings> {
   ThemeMode _themeMode = ThemeMode.system;
   void changeTheme(ThemeMode themeMode) {
@@ -59,49 +58,46 @@ class _SettingsState extends State<Settings> {
       _themeMode = themeMode;
     });
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(primarySwatch: Colors.blue),
-        
+
       // standard dark theme
-      darkTheme: ThemeData.dark(), 
+      darkTheme: ThemeData.dark(),
       themeMode: _themeMode,
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Asetukset'),
+          title: const Text('Asetukset'),
           leading: BackButton(
             color: Colors.black,
-            onPressed: () => runApp(MyApp()),
+            onPressed: () => runApp(const MyApp()),
           ),
-           
         ),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
+              const Text(
                 'Choose your theme:',
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                    
-                  // Change theme & rebuild to 
+                  // Change theme & rebuild to
                   // show it using these buttons
                   ElevatedButton(
                       onPressed: () {
                         changeTheme(ThemeMode.light);
                       },
-                      child: Text('Light theme')),
+                      child: const Text('Light theme')),
                   ElevatedButton(
                       onPressed: () {
                         changeTheme(ThemeMode.dark);
                       },
-                      child: Text('Dark theme')),
-                    
+                      child: const Text('Dark theme')),
                 ],
               ),
             ],

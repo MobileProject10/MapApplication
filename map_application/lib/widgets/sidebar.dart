@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-
 class SideBar extends StatelessWidget {
+  const SideBar({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       drawer: Drawer(
         // Add a ListView to the drawer. This ensures the user can scroll
         // through the options in the drawer if there isn't enough vertical
