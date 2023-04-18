@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_maps_in_flutter/Router.dart';
+import 'package:provider/provider.dart';
 import 'LoginScreen.dart';
+import 'models/theme_settings.dart';
+import 'widgets/settings.dart';
 
 void main() => runApp(LoginApp());
 
@@ -33,24 +37,73 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        useMaterial3: true,
-        colorSchemeSeed: Colors.green[700],
-      ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Maps Sample App'),
-          elevation: 2,
-        ),
-        body: GoogleMap(
-          onMapCreated: _onMapCreated,
-          initialCameraPosition: CameraPosition(
-            target: _center,
-            zoom: 11.0,
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+            create: (context) => ThemeSettings(),
           ),
-        ),
-      ),
-    );
+        ],
+        child: Consumer<ThemeSettings>(
+          builder: (context, value, child) {
+            return MaterialApp(
+              theme: value.darkTheme ? darkTheme : lightTheme,
+              home: Scaffold(
+                appBar: AppBar(
+                  title: const Text('Maps Sample App'),
+                  elevation: 2,
+                ),
+                drawer: Drawer(
+                  // Add a ListView to the drawer. This ensures the user can scroll
+                  // through the options in the drawer if there isn't enough vertical
+                  // space to fit everything.
+                  child: ListView(
+                    // Important: Remove any padding from the ListView.
+                    padding: EdgeInsets.zero,
+                    children: [
+                      const DrawerHeader(
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                        ),
+                        child: Text('Drawer Header'),
+                      ),
+                      ListTile(
+                        leading: const Icon(Icons.settings),
+                        title: const Text('Asetukset'),
+                        onTap: () {
+                          // Update the state of the app
+                          // ...
+                          // Then close the drawer
+                          runApp(router());
+                          //Navigator.pop(context);
+                        },
+                      ),
+                      ListTile(
+                        leading: const Icon(Icons.exit_to_app),
+                        title: const Text('Kirjaudu ulos'),
+                        onTap: () {
+                          // Update the state of the app
+                          // ...
+                          // Then close the drawer
+                          runApp(LoginScreen(onSubmit: (String value) {  },));
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                body: GoogleMap(
+                  onMapCreated: _onMapCreated,
+                  initialCameraPosition: CameraPosition(
+                    target: _center,
+                    zoom: 11.0,
+                  ),
+                ),
+              ),
+            );
+          },
+        ));
   }
 }
+
+
+
+

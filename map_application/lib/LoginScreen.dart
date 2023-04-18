@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_in_flutter/main.dart';
+import 'package:provider/provider.dart';
 import 'RegisterScreen.dart';
+import 'models/theme_settings.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key, required this.onSubmit}) : super(key: key);
@@ -22,7 +24,7 @@ Widget buildRegisterBtn() {
         ))
       },
       style: ElevatedButton.styleFrom(
-        primary: Color.fromARGB(255, 228, 228, 228),
+        primary: Colors.transparent,
         shadowColor: Colors.transparent,
         elevation: 0,
       ),
@@ -83,6 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
       widget.onSubmit(_controller.value.text);
       widget.onSubmit(_controller2.value.text);
       runApp(MyApp());
+      
     }
   }
 
@@ -91,7 +94,17 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create:(context) => ThemeSettings(),
+        ),
+      ],
+      child: Consumer<ThemeSettings>(
+        builder:(context, value, child) {
+          return MaterialApp(
+      theme: value.darkTheme ? darkTheme : lightTheme ,
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Kirjaudu'),
@@ -102,14 +115,10 @@ class _LoginScreenState extends State<LoginScreen> {
           child: GestureDetector(
             child: Stack(
               children: <Widget>[
-
                 Container(
                   padding: EdgeInsets.only(left: 30, right: 30),
                   height: double.infinity,
                   width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 228, 228, 228),
-                  ),
                   
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -161,7 +170,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                           ),
                         ),
-
                       buildRegisterBtn(),
                     ],
                   ),
@@ -171,6 +179,9 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       ),
+        );
+        },
+      )
     );
   }
 }

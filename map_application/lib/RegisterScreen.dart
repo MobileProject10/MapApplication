@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_in_flutter/LoginScreen.dart';
+import 'package:provider/provider.dart';
+
+import 'models/theme_settings.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key, required this.onSubmit}) : super(key: key);
@@ -119,7 +122,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create:(context) => ThemeSettings(),
+        ),
+      ],
+      child: Consumer<ThemeSettings>(
+        builder:(context, value, child) {
+          return MaterialApp(
+      theme: value.darkTheme ? darkTheme : lightTheme ,
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Rekisteröidy'),
@@ -135,7 +148,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   height: double.infinity,
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 228, 228, 228),
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -209,6 +221,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
         ),
       ),
+        );
+        },
+      )
     );
   }
 }
