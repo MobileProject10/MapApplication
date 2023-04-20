@@ -1,45 +1,160 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:place_picker/place_picker.dart';
+import 'package:flutter/services.dart';
+import 'package:map_location_picker/map_location_picker.dart';
 
-void main() => runApp(const MyApp());
-
+void main() {
+  runApp(
+    const MaterialApp(
+      home: MyApp(),
+      debugShowCheckedModeBanner: false,
+    ),
+  );
+}
 
 class MyApp extends StatefulWidget {
-  const MyApp({key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-  late GoogleMapController mapController;
+  String address = "null";
+  String autocompletePlace = "null";
+  Prediction? initialValue;
 
-  final LatLng _center = const LatLng(45.521563, -122.677433);
-
-  void _onMapCreated(GoogleMapController controller) {
-    mapController = controller;
-  }
-
+  final TextEditingController _controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        useMaterial3: true,
-        colorSchemeSeed: Colors.green[700],
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('OuluRoutes'),
       ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('OuluRoutes'),
-          elevation: 2,
-        ),
-        body: GoogleMap(
-          onMapCreated: _onMapCreated,
-          initialCameraPosition: CameraPosition(
-            target: _center,
-            zoom: 11.0,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          PlacesAutocomplete(
+            searchController: _controller,
+            apiKey: "AIzaSyDo2V2ggOnq3oPDk_qqCnxaP0M4IIiMXDY",
+            mounted: mounted,
+            showBackButton: false,
+            onGetDetailsByPlaceId: (PlacesDetailsResponse? result) {
+              if (result != null) {
+                setState(() {
+                  autocompletePlace = result.result.formattedAddress ?? "";
+                });
+              }
+            },
           ),
-        ),
+          OutlinedButton(
+            child: Text('show dialog'.toUpperCase()),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: const Text('Example'),
+                    content: PlacesAutocomplete(
+                      apiKey: "AIzaSyDo2V2ggOnq3oPDk_qqCnxaP0M4IIiMXDY",
+                      searchHintText: "Search for a place",
+                      mounted: mounted,
+                      showBackButton: false,
+                      initialValue: initialValue,
+                      onSuggestionSelected: (value) {
+                        setState(() {
+                          autocompletePlace =
+                              value.structuredFormatting?.mainText ?? "";
+                          initialValue = value;
+                        });
+                      },
+                      onGetDetailsByPlaceId: (value) {
+                        setState(() {
+                          address = value?.result.formattedAddress ?? "";
+                        });
+                      },
+                    ),
+                    actions: <Widget>[
+                      TextButton(
+                        child: const Text('Done'),
+                        onPressed: () => Navigator.of(context).pop(),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+          ),
+          const Spacer(),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text(
+              "Made by Helmi uwu",
+              textAlign: TextAlign.center,
+              textScaleFactor: 1.2,
+              style: TextStyle(
+                color: Colors.grey,
+              ),
+            ),
+          ),
+          /* TextButton(
+            onPressed: () => Clipboard.setData(
+              const ClipboardData(text: "https://www.mohesu.com"),
+            ).then(
+              (value) => ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("Copied to Clipboard"),
+                ),
+              ),
+            ),
+            child: const Text("https://www.mohesu.com"),
+          ),*/
+          const Spacer(),
+          Center(
+            child: ElevatedButton(
+              child: const Text('Pick location'),
+              onPressed: () async {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return MapLocationPicker(
+                        apiKey: "AIzaSyDo2V2ggOnq3oPDk_qqCnxaP0M4IIiMXDY",
+                        canPopOnNextButtonTaped: true,
+                        currentLatLng: const LatLng(29.121599, 76.396698),
+                        onNext: (GeocodingResult? result) {
+                          if (result != null) {
+                            setState(() {
+                              address = result.formattedAddress ?? "";
+                            });
+                          }
+                        },
+                        onSuggestionSelected: (PlacesDetailsResponse? result) {
+                          if (result != null) {
+                            setState(() {
+                              autocompletePlace =
+                                  result.result.formattedAddress ?? "";
+                            });
+                          }
+                        },
+                      );
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
+          const Spacer(),
+          ListTile(
+            title: Text("Geocoded Address: $address"),
+          ),
+          ListTile(
+            title: Text("Autocomplete Address: $autocompletePlace"),
+          ),
+          const Spacer(
+            flex: 3,
+          ),
+        ],
       ),
     );
   }
