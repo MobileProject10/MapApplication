@@ -85,7 +85,6 @@ class _LoginScreenState extends State<LoginScreen> {
       widget.onSubmit(_controller.value.text);
       widget.onSubmit(_controller2.value.text);
       runApp(MyApp());
-      
     }
   }
 
@@ -94,94 +93,98 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create:(context) => ThemeSettings(),
-        ),
-      ],
-      child: Consumer<ThemeSettings>(
-        builder:(context, value, child) {
-          return MaterialApp(
-      theme: value.darkTheme ? darkTheme : lightTheme ,
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Kirjaudu'),
-          elevation: 2,
-        ),
-        body: AnnotatedRegion<SystemUiOverlayStyle>(
-          value: SystemUiOverlayStyle.light,
-          child: GestureDetector(
-            child: Stack(
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.only(left: 30, right: 30),
-                  height: double.infinity,
-                  width: double.infinity,
-                  
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-
-                      Text(
-                        'OuluRoutes',
-                        style: TextStyle(
-                          color: Color.fromARGB(255, 17, 113, 158),
-                          fontSize: 25,
-                        ),
-                      ),
-
-                      SizedBox(height: 10),
-
-                      TextField(
-                        controller: _controller,
-                        decoration: InputDecoration(
-                          hintText: 'Käyttäjänimi...',
-                          errorText: _submitted ? _errorText : null,
-                        ),
-                        onChanged: (text) => setState(() => _text),
-                      ),
-
-                      TextField(
-                        obscureText: true,
-                        controller: _controller2,
-                        decoration: InputDecoration(
-                          hintText: 'Salasana...',
-                          errorText: _submitted ? _errorText2 : null,
-                        ),
-                        onChanged: (text) => setState(() => _text2),
-                      ),
-
-                      SizedBox(height: 20,),
-
-                      ElevatedButton(
-                          onPressed:
-                              _controller.value.text.isNotEmpty && _controller2.value.text.isNotEmpty ? _submit : null,
-                          style: ElevatedButton.styleFrom(
-                                  padding: EdgeInsets.only(top: 15, bottom: 15, left: 50, right: 50),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20))),
-                          child: Text(
-                            'Kirjaudu',
-                            style: TextStyle(
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                          ),
-                        ),
-                      buildRegisterBtn(),
-                    ],
-                  ),
-                )
-              ],
-            ),
+        providers: [
+          ChangeNotifierProvider(
+            create: (context) => ThemeSettings(),
           ),
-        ),
-      ),
-        );
-        },
-      )
-    );
+        ],
+        child: Consumer<ThemeSettings>(
+          builder: (context, value, child) {
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              theme: value.darkTheme ? darkTheme : lightTheme,
+              home: Scaffold(
+                appBar: AppBar(
+                  title: const Text('Kirjaudu'),
+                  elevation: 2,
+                  backgroundColor: Color.fromARGB(255, 33, 143, 11),
+                ),
+                body: AnnotatedRegion<SystemUiOverlayStyle>(
+                  value: SystemUiOverlayStyle.light,
+                  child: GestureDetector(
+                    child: Stack(
+                      children: <Widget>[
+                        Container(
+                          padding: EdgeInsets.only(left: 30, right: 30),
+                          height: double.infinity,
+                          width: double.infinity,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Text(
+                                'OuluRoutes',
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 45, 158, 17),
+                                  fontSize: 25,
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                              TextField(
+                                controller: _controller,
+                                decoration: InputDecoration(
+                                  hintText: 'Käyttäjänimi...',
+                                  errorText: _submitted ? _errorText : null,
+                                ),
+                                onChanged: (text) => setState(() => _text),
+                              ),
+                              TextField(
+                                obscureText: true,
+                                controller: _controller2,
+                                decoration: InputDecoration(
+                                  hintText: 'Salasana...',
+                                  errorText: _submitted ? _errorText2 : null,
+                                ),
+                                onChanged: (text) => setState(() => _text2),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              ElevatedButton(
+                                onPressed: _controller.value.text.isNotEmpty &&
+                                        _controller2.value.text.isNotEmpty
+                                    ? _submit
+                                    : null,
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                        Color.fromARGB(255, 33, 143, 11),
+                                    padding: EdgeInsets.only(
+                                        top: 15,
+                                        bottom: 15,
+                                        left: 50,
+                                        right: 50),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(20))),
+                                child: Text(
+                                  'Kirjaudu',
+                                  style: TextStyle(
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                              ),
+                              buildRegisterBtn(),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
+        ));
   }
 }

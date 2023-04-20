@@ -46,11 +46,13 @@ class _MyAppState extends State<MyApp> {
         child: Consumer<ThemeSettings>(
           builder: (context, value, child) {
             return MaterialApp(
+              debugShowCheckedModeBanner: false,
               theme: value.darkTheme ? darkTheme : lightTheme,
               home: Scaffold(
                 appBar: AppBar(
-                  title: const Text('Maps Sample App'),
+                  title: const Text('OuluRoutes'),
                   elevation: 2,
+                  backgroundColor: Color.fromARGB(255, 33, 143, 11),
                 ),
                 drawer: Drawer(
                   // Add a ListView to the drawer. This ensures the user can scroll
@@ -62,9 +64,14 @@ class _MyAppState extends State<MyApp> {
                     children: [
                       const DrawerHeader(
                         decoration: BoxDecoration(
-                          color: Colors.blue,
+                          color: Color.fromARGB(255, 33, 143, 11),
                         ),
-                        child: Text('Drawer Header'),
+                        child: Text('Valikko',
+                          style: TextStyle(
+                          fontSize: 30,
+                          letterSpacing: 3,
+                        ),
+                        ),
                       ),
                       ListTile(
                         leading: const Icon(Icons.settings),
