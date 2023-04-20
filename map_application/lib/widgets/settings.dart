@@ -24,6 +24,7 @@ class _SettingsState extends State<Settings> {
         ),
         body: Column(
           children: [
+            
             Consumer<ThemeSettings>(
               builder: (context, value, child) {
                 return SwitchListTile(
