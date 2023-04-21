@@ -3,8 +3,10 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_in_flutter/Router.dart';
 import 'package:provider/provider.dart';
 import 'LoginScreen.dart';
+import 'map_location_picker.dart';
 import 'models/theme_settings.dart';
 import 'widgets/settings.dart';
+import 'Map.dart';
 
 void main() => runApp(LoginApp());
 
@@ -21,12 +23,20 @@ class LoginApp extends StatelessWidget {
     return MaterialApp(
       title: 'Google Maps In Flutter',
       debugShowCheckedModeBanner: false,
-      home: LoginScreen(onSubmit: (String value) {  },),
+      home: LoginScreen(
+        onSubmit: (String value) {},
+      ),
     );
   }
 }
 
 class _MyAppState extends State<MyApp> {
+  String address = "null";
+  String autocompletePlace = "null";
+  Prediction? initialValue;
+
+  final TextEditingController _controller = TextEditingController();
+
   late GoogleMapController mapController;
 
   final LatLng _center = const LatLng(45.521563, -122.677433);
@@ -66,11 +76,12 @@ class _MyAppState extends State<MyApp> {
                         decoration: BoxDecoration(
                           color: Color.fromARGB(255, 33, 143, 11),
                         ),
-                        child: Text('Valikko',
+                        child: Text(
+                          'Valikko',
                           style: TextStyle(
-                          fontSize: 30,
-                          letterSpacing: 3,
-                        ),
+                            fontSize: 30,
+                            letterSpacing: 3,
+                          ),
                         ),
                       ),
                       ListTile(
@@ -91,18 +102,117 @@ class _MyAppState extends State<MyApp> {
                           // Update the state of the app
                           // ...
                           // Then close the drawer
-                          runApp(LoginScreen(onSubmit: (String value) {  },));
+                          runApp(LoginScreen(
+                            onSubmit: (String value) {},
+                          ));
                         },
                       ),
                     ],
                   ),
                 ),
-                body: GoogleMap(
-                  onMapCreated: _onMapCreated,
-                  initialCameraPosition: CameraPosition(
-                    target: _center,
-                    zoom: 11.0,
-                  ),
+                body: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    PlacesAutocomplete(
+                      searchController: _controller,
+                      apiKey: "AIzaSyDo2V2ggOnq3oPDk_qqCnxaP0M4IIiMXDY",
+                      mounted: mounted,
+                      showBackButton: false,
+                      onGetDetailsByPlaceId: (PlacesDetailsResponse? result) {
+                        if (result != null) {
+                          setState(() {
+                            autocompletePlace =
+                                result.result.formattedAddress ?? "";
+                          });
+                        }
+                      },
+                    ),
+                    OutlinedButton(
+                      child: Text('show dialog'.toUpperCase()),
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: const Text('Example'),
+                              content: PlacesAutocomplete(
+                                apiKey:
+                                    "AIzaSyDo2V2ggOnq3oPDk_qqCnxaP0M4IIiMXDY",
+                                searchHintText: "Search for a place",
+                                mounted: mounted,
+                                showBackButton: false,
+                                initialValue: initialValue,
+                                onSuggestionSelected: (value) {
+                                  setState(() {
+                                    autocompletePlace =
+                                        value.structuredFormatting?.mainText ??
+                                            "";
+                                    initialValue = value;
+                                  });
+                                },
+                                onGetDetailsByPlaceId: (value) {
+                                  setState(() {
+                                    address =
+                                        value?.result.formattedAddress ?? "";
+                                  });
+                                },
+                              ),
+                              actions: <Widget>[
+                                TextButton(
+                                  child: const Text('Done'),
+                                  onPressed: () => Navigator.of(context).pop(),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                    ),
+                    const Spacer(),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        "Made by Helmi uwu",
+                        textAlign: TextAlign.center,
+                        textScaleFactor: 1.2,
+                        style: TextStyle(
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ),
+                    /* TextButton(
+            onPressed: () => Clipboard.setData(
+              const ClipboardData(text: "https://www.mohesu.com"),
+            ).then(
+              (value) => ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("Copied to Clipboard"),
+                ),
+              ),
+            ),
+            child: const Text("https://www.mohesu.com"),
+          ),*/
+                    const Spacer(),
+                    Center(
+                      child: ElevatedButton(
+                        child: const Text('Pick location'),
+                        onPressed: () async {
+                          runApp(Map(onSubmit: (String value) {  },));
+                        },
+                      ),
+                    ),
+                    const Spacer(),
+                    ListTile(
+                      title: Text("Geocoded Address: $address"),
+                    ),
+                    ListTile(
+                      title: Text("Autocomplete Address: $autocompletePlace"),
+                    ),
+                    const Spacer(
+                      flex: 3,
+                    ),
+                  ],
                 ),
               ),
             );
@@ -110,7 +220,3 @@ class _MyAppState extends State<MyApp> {
         ));
   }
 }
-
-
-
-
