@@ -128,59 +128,47 @@ class _MyAppState extends State<MyApp> {
                         }
                       },
                     ),
-                    OutlinedButton(
-                      child: Text('show dialog'.toUpperCase()),
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: const Text('Example'),
-                              content: PlacesAutocomplete(
-                                apiKey:
-                                    "AIzaSyDo2V2ggOnq3oPDk_qqCnxaP0M4IIiMXDY",
-                                searchHintText: "Search for a place",
-                                mounted: mounted,
-                                showBackButton: false,
-                                initialValue: initialValue,
-                                onSuggestionSelected: (value) {
-                                  setState(() {
-                                    autocompletePlace =
-                                        value.structuredFormatting?.mainText ??
-                                            "";
-                                    initialValue = value;
-                                  });
-                                },
-                                onGetDetailsByPlaceId: (value) {
-                                  setState(() {
-                                    address =
-                                        value?.result.formattedAddress ?? "";
-                                  });
-                                },
-                              ),
-                              actions: <Widget>[
-                                TextButton(
-                                  child: const Text('Done'),
-                                  onPressed: () => Navigator.of(context).pop(),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      },
-                    ),
-                    const Spacer(),
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text(
-                        "Made by Helmi uwu",
-                        textAlign: TextAlign.center,
-                        textScaleFactor: 1.2,
-                        style: TextStyle(
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ),
+                    // OutlinedButton(
+                    //   child: Text('show dialog'.toUpperCase()),
+                    //   onPressed: () {
+                    //     showDialog(
+                    //       context: context,
+                    //       builder: (context) {
+                    //         return AlertDialog(
+                    //           title: const Text('Example'),
+                    //           content: PlacesAutocomplete(
+                    //             apiKey:
+                    //                 "AIzaSyDo2V2ggOnq3oPDk_qqCnxaP0M4IIiMXDY",
+                    //             searchHintText: "Search for a place",
+                    //             mounted: mounted,
+                    //             showBackButton: false,
+                    //             initialValue: initialValue,
+                    //             onSuggestionSelected: (value) {
+                    //               setState(() {
+                    //                 autocompletePlace =
+                    //                     value.structuredFormatting?.mainText ??
+                    //                         "";
+                    //                 initialValue = value;
+                    //               });
+                    //             },
+                    //             onGetDetailsByPlaceId: (value) {
+                    //               setState(() {
+                    //                 address =
+                    //                     value?.result.formattedAddress ?? "";
+                    //               });
+                    //             },
+                    //           ),
+                    //           actions: <Widget>[
+                    //             TextButton(
+                    //               child: const Text('Done'),
+                    //               onPressed: () => Navigator.of(context).pop(),
+                    //             ),
+                    //           ],
+                    //         );
+                    //       },
+                    //     );
+                    //   },
+                    // ),
                     /* TextButton(
             onPressed: () => Clipboard.setData(
               const ClipboardData(text: "https://www.mohesu.com"),
@@ -193,25 +181,18 @@ class _MyAppState extends State<MyApp> {
             ),
             child: const Text("https://www.mohesu.com"),
           ),*/
-                    const Spacer(),
                     Center(
                       child: ElevatedButton(
-                        child: const Text('Pick location'),
+                        style: ElevatedButton.styleFrom(
+                         backgroundColor: Color.fromARGB(255, 33, 143, 11),
+                        ),
+                        child: const Text('Valitse kohde'),
                         onPressed: () async {
                           runApp(Map(onSubmit: (String value) {  },));
                         },
                       ),
                     ),
                     const Spacer(),
-                    ListTile(
-                      title: Text("Geocoded Address: $address"),
-                    ),
-                    ListTile(
-                      title: Text("Autocomplete Address: $autocompletePlace"),
-                    ),
-                    const Spacer(
-                      flex: 3,
-                    ),
                   ],
                 ),
               ),

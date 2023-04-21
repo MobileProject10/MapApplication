@@ -179,7 +179,7 @@ class MapLocationPicker extends StatefulWidget {
       borderRadius: BorderRadius.all(Radius.circular(12)),
     ),
     this.borderRadius = const BorderRadius.all(Radius.circular(12)),
-    this.searchHintText = "Start typing to search",
+    this.searchHintText = "Hae kohdetta...",
     this.bottomCardShape = const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(12)),
     ),
@@ -226,7 +226,7 @@ class _MapLocationPickerState extends State<MapLocationPicker> {
   late LatLng _initialPosition = const LatLng(28.8993468, 76.6250249);
 
   /// initial address text
-  late String _address = "Tap on map to get address";
+  late String _address = "Kopioi kohteen osoite napauttamalla karttaa";
 
   /// Map type (default: MapType.normal)
   late MapType _mapType = MapType.normal;

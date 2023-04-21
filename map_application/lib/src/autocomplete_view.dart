@@ -353,7 +353,7 @@ class PlacesAutocomplete extends StatelessWidget {
       borderRadius: BorderRadius.all(Radius.circular(12)),
     ),
     this.borderRadius = const BorderRadius.all(Radius.circular(12)),
-    this.searchHintText = "Start typing to search",
+    this.searchHintText = "Hae kohdetta...",
     this.showBackButton = true,
     this.backButton,
     this.placesHttpClient,
